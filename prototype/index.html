@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ọjà Ìfẹ́, Love Market prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EAD9;
+    --paper-2:#EADFC8;
+    --ink:#181713;
+    --ink-soft:#5A5344;
+    --green:#133A2E;
+    --green-2:#1E5442;
+    --ochre:#C8862B;
+    --ochre-2:#E3A93F;
+    --clay:#A8452A;
+    --line:#C9B99A;
+    --white:#FBF7EF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    padding:34px 30px 60px;
+    background-image:
+      repeating-linear-gradient(0deg,rgba(0,0,0,.018) 0 1px,transparent 1px 3px);
+  }
+  .wrap{max-width:1400px;margin:0 auto}
+
+  /* ---------- masthead ---------- */
+  .masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;border-bottom:3px double var(--ink);padding-bottom:16px;flex-wrap:wrap}
+  .brandmark{font-family:'Fraunces',Georgia,serif;font-weight:900;font-size:clamp(46px,7vw,88px);line-height:.9;letter-spacing:-.03em}
+  .brandmark small{display:block;font-family:'Inter';font-weight:600;font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--ink-soft);margin-top:10px}
+  .stamp{
+    border:2px solid var(--clay);color:var(--clay);border-radius:4px;
+    padding:9px 13px;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    transform:rotate(-2.4deg);white-space:nowrap;line-height:1.5;
+  }
+  .dek{display:flex;gap:44px;flex-wrap:wrap;margin:22px 0 40px;align-items:flex-start}
+  .dek p{max-width:52ch;font-size:15.5px;line-height:1.62;color:var(--ink-soft)}
+  .dek p b{color:var(--ink);font-weight:600}
+  .facts{display:flex;gap:30px;flex-wrap:wrap;border-left:2px solid var(--ochre);padding-left:20px}
+  .fact b{display:block;font-family:'Fraunces',serif;font-size:23px;font-weight:700;color:var(--green)}
+  .fact span{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft)}
+
+  /* ---------- phone strip ---------- */
+  .strip{display:flex;gap:34px;overflow-x:auto;padding:8px 4px 26px;align-items:flex-start}
+  .col{flex:0 0 auto;width:300px}
+  .col h3{font-family:'Fraunces',serif;font-size:19px;font-weight:700;letter-spacing:-.01em;margin-bottom:3px}
+  .col .note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;min-height:52px;margin-bottom:12px}
+  .num{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--clay)}
+
+  .phone{
+    width:300px;height:620px;background:var(--green);border-radius:26px;padding:9px;
+    box-shadow:0 22px 44px -20px rgba(24,23,19,.5);position:relative;
+  }
+  .screen{width:100%;height:100%;background:var(--paper);border-radius:19px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+  .status{display:flex;justify-content:space-between;padding:9px 16px 4px;font-size:10px;font-weight:600;color:var(--ink-soft)}
+
+  /* splash */
+  .splash{flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 26px;background:var(--green);color:var(--paper)}
+  .splash .big{font-family:'Fraunces',serif;font-weight:900;font-size:44px;line-height:.92;letter-spacing:-.03em}
+  .splash .rule{height:2px;background:var(--ochre);width:54px;margin:20px 0}
+  .splash p{font-size:13px;line-height:1.65;color:#CFC4A8}
+  .splash .btn{margin-top:26px;background:var(--ochre);color:var(--green);text-align:center;padding:14px;border-radius:999px;font-weight:700;font-size:13px}
+  .splash .fine{margin-top:12px;font-size:10px;color:#9C927A;text-align:center;letter-spacing:.06em}
+
+  /* verify */
+  .pad{padding:0 22px}
+  .eyebrow{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--clay);margin:14px 0 6px}
+  .h1{font-family:'Fraunces',serif;font-size:25px;font-weight:700;line-height:1.1;letter-spacing:-.02em}
+  .body{font-size:12px;line-height:1.6;color:var(--ink-soft);margin-top:9px}
+  .field{border:1.5px solid var(--line);border-radius:9px;padding:11px 12px;margin-top:11px;background:var(--white);font-size:12px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .field .tag{font-size:9px;font-weight:700;letter-spacing:.1em;color:var(--green-2);text-transform:uppercase}
+  .field.done{border-color:var(--green-2);background:#EAF0E6}
+  .field.active{border-color:var(--ochre);box-shadow:0 0 0 3px rgba(200,134,43,.13)}
+  .check{color:var(--green-2);font-weight:800;font-size:13px}
+  .lock{margin-top:14px;border-top:1px dashed var(--line);padding-top:11px;font-size:10.5px;line-height:1.55;color:var(--ink-soft)}
+
+  /* deck */
+  .deckwrap{flex:1;position:relative;padding:10px 14px 0;overflow:hidden}
+  .card{
+    position:absolute;inset:12px 22px 96px;border-radius:16px;overflow:hidden;
+    box-shadow:0 16px 30px -14px rgba(24,23,19,.55);background:#ddd;
+    transition:transform .38s cubic-bezier(.2,.8,.3,1),opacity .38s;
+  }
+  .card.under{transform:scale(.945) translateY(11px);opacity:.55}
+  .card .photo{position:absolute;inset:0;background-size:cover;background-position:center}
+  .card .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06) 30%,rgba(0,0,0,.82))}
+  .card .info{position:absolute;left:0;right:0;bottom:0;padding:15px 16px;color:#fff;z-index:2}
+  .card .nm{font-family:'Fraunces',serif;font-size:24px;font-weight:700;line-height:1.05;letter-spacing:-.02em}
+  .vbadge{display:inline-flex;align-items:center;gap:4px;background:var(--green-2);color:#fff;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:999px;margin-bottom:7px}
+  .card .meta{font-size:11px;color:#E6E0D0;margin-top:5px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .card .pill{background:rgba(255,255,255,.17);padding:2px 8px;border-radius:999px;font-size:10px;font-weight:600;backdrop-filter:none}
+  .card .prompt{margin-top:10px;background:rgba(251,247,239,.94);color:var(--ink);border-radius:10px;padding:10px 11px;font-size:11.5px;line-height:1.5}
+  .card .prompt b{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin-bottom:3px}
+  .actions{position:absolute;left:0;right:0;bottom:16px;display:flex;justify-content:center;gap:20px;z-index:5}
+  .act{width:56px;height:56px;border-radius:50%;border:1.5px solid var(--line);background:var(--white);
+        display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;
+        box-shadow:0 6px 14px -6px rgba(24,23,19,.4);transition:transform .16s}
+  .act:hover{transform:translateY(-3px) scale(1.06)}
+  .act.like{border-color:var(--green-2);color:var(--green-2)}
+  .act.nope{border-color:var(--clay);color:var(--clay)}
+  .act.star{border-color:var(--ochre);color:var(--ochre);width:44px;height:44px;font-size:17px;align-self:center}
+
+  /* chat */
+  .matchbar{background:var(--green);color:var(--paper);text-align:center;padding:11px;font-size:11.5px;font-weight:600}
+  .matchbar span{color:var(--ochre-2)}
+  .chat{flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:11px;overflow:hidden}
+  .bub{max-width:82%;padding:10px 12px;border-radius:13px;font-size:12px;line-height:1.5}
+  .them{background:var(--white);border:1.5px solid var(--line);border-bottom-left-radius:4px}
+  .me{background:var(--green-2);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .voice{display:flex;align-items:center;gap:9px}
+  .play{width:26px;height:26px;border-radius:50%;background:var(--ochre);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;flex:0 0 auto}
+  .wave{display:flex;align-items:center;gap:2px;height:20px}
+  .wave i{width:2.5px;background:currentColor;opacity:.55;border-radius:2px;display:block}
+  .dur{font-size:10px;opacity:.75}
+  .composer{border-top:1.5px solid var(--line);padding:10px 14px;display:flex;gap:9px;align-items:center;background:var(--paper-2)}
+  .composer .input{flex:1;background:var(--white);border:1.5px solid var(--line);border-radius:999px;padding:9px 13px;font-size:11.5px;color:var(--ink-soft)}
+  .composer .mic{width:38px;height:38px;border-radius:50%;background:var(--clay);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .safety{margin-top:auto;background:#EAF0E6;border:1px dashed var(--green-2);border-radius:9px;padding:9px 11px;font-size:10.5px;line-height:1.5;color:var(--green)}
+  .safety b{display:block;letter-spacing:.1em;text-transform:uppercase;font-size:9px;margin-bottom:3px}
+
+  /* pass */
+  .pass{flex:1;overflow:hidden;display:flex;flex-direction:column}
+  .passhead{background:var(--green);color:var(--paper);padding:18px 20px 20px}
+  .passhead .eyebrow{color:var(--ochre-2);margin:0 0 5px}
+  .passhead .h1{color:var(--paper)}
+  .passhead p{font-size:11px;color:#CFC4A8;margin-top:7px;line-height:1.55}
+  .board{padding:14px 16px}
+  .row{display:flex;justify-content:space-between;align-items:baseline;padding:11px 2px;border-bottom:1.5px dotted var(--line)}
+  .row .l b{display:block;font-family:'Fraunces',serif;font-size:16px;font-weight:700}
+  .row .l span{font-size:10px;color:var(--ink-soft)}
+  .row .r{font-family:'Fraunces',serif;font-size:19px;font-weight:900;color:var(--green);white-space:nowrap}
+  .row.pick{background:#F7EFDD;border-radius:9px;padding:11px 10px;border-bottom:none;margin:4px 0}
+  .row.pick .r{color:var(--clay)}
+  .save{font-size:9px;background:var(--clay);color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;letter-spacing:.06em;margin-left:6px;vertical-align:middle}
+  .free{border:1.5px solid var(--green-2);border-radius:10px;padding:11px 12px;margin-top:14px;font-size:11px;line-height:1.55}
+  .free b{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-2);margin-bottom:4px}
+  .pay{margin-top:12px;text-align:center;font-size:10px;color:var(--ink-soft);letter-spacing:.03em}
+  .wallets{display:flex;gap:6px;margin-top:9px;justify-content:center;flex-wrap:wrap}
+  .wallets span{border:1.5px solid var(--line);border-radius:5px;padding:4px 8px;font-size:9.5px;font-weight:600;color:var(--ink-soft);background:var(--white)}
+
+  footer{margin-top:34px;border-top:3px double var(--ink);padding-top:16px;display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft)}
+  footer b{color:var(--ink)}
+  .legend{display:flex;gap:18px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="brandmark">Ọjà Ìfẹ́<small>Love Market · Lagos</small></div>
+    <div class="stamp">Verified profiles only<br>₦ pricing · airtime ready</div>
+  </div>
+
+  <div class="dek">
+    <p><b>Tinder sells access to strangers. Love Market sells verified strangers you can safely meet.</b>
+    A market is a place with traders, reputations and witnesses. That is the product: phone-first identity,
+    a real face behind every profile, and naira on any phone over any network.</p>
+    <div class="facts">
+      <div class="fact"><b>75%</b><span>Smartphone reach '25</span></div>
+      <div class="fact"><b>63%</b><span>Android share</span></div>
+      <div class="fact"><b>~40%</b><span>Mobile internet</span></div>
+      <div class="fact"><b>₦2,500</b><span>Pass / month</span></div>
+    </div>
+  </div>
+
+  <div class="strip">
+
+    <!-- 1 splash -->
+    <div class="col">
+      <div class="num">01</div>
+      <h3>Open the market</h3>
+      <div class="note">Brand is local, not translated. Safety claim is the headline, not a settings page.</div>
+      <div class="phone"><div class="screen">
+        <div class="status" style="color:#9C927A"><span>9:41</span><span>MTN 4G</span></div>
+        <div class="splash">
+          <div class="big">Ọjà<br>Ìfẹ́</div>
+          <div class="rule"></div>
+          <p>Every profile here is a real Nigerian. Verified by phone, NIN and a live face check.</p>
+          <div class="btn">Create your profile</div>
+          <div class="fine">Always free to join · 18+</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 2 verify -->
+    <div class="col">
+      <div class="num">02</div>
+      <h3>Prove you're human</h3>
+      <div class="note">The gate, not a badge. Unverified profiles never reach a deck.</div>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span>MTN 4G</span></div>
+        <div class="pad">
+          <div class="eyebrow">Step 2 of 3</div>
+          <div class="h1">Let's make sure you're real.</div>
+          <div class="body">This is what keeps the market clean. It takes about a minute, and you only do it once.</div>
+          <div class="field done"><span>Phone <b>0803 ••• 4417</b></span><span class="check">✓</span></div>
+          <div class="field done"><span>NIN verified <b>Dojah</b></span><span class="check">✓</span></div>
+          <div class="field active"><span>Live face check</span><span class="tag">Open camera</span></div>
+          <div class="field"><span>Area <b>Lekki Phase 1</b></span><span class="tag">Change</span></div>
+          <div class="lock"><b>Never paywalled.</b> Verification, reporting, blocking and date check-in are free for every user, forever. Your ID is used for the check only and is not stored after.</div>
+          <div class="lock" style="border-top:none;padding-top:9px"><b>Device trust</b>Checked quietly, never shown as a badge. Review and revoke devices on your account anytime.</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 3 deck -->
+    <div class="col">
+      <div class="num">03</div>
+      <h3>The deck</h3>
+      <div class="note">Tap the buttons: real interaction. Drive-time distance, not kilometres, because Lagos.</div>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span>MTN 4G</span></div>
+        <div class="deckwrap" id="deck">
+          <div class="card under" id="c2"></div>
+          <div class="card" id="c1"></div>
+          <div class="actions">
+            <div class="act nope" onclick="swipe('nope')">✕</div>
+            <div class="act star" onclick="swipe('star')">★</div>
+            <div class="act like" onclick="swipe('like')">♥</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 4 chat -->
+    <div class="col">
+      <div class="num">04</div>
+      <h3>Talk like Nigerians talk</h3>
+      <div class="note">Voice notes are first-class, not a feature. Cheap on data, and it's how people actually open a conversation.</div>
+      <div class="phone"><div class="screen">
+        <div class="status"><span>9:41</span><span>MTN 4G</span></div>
+        <div class="matchbar">You and <span>Adaeze</span> matched · say something real</div>
+        <div class="chat">
+          <div class="bub them">
+            <div class="voice"><span class="play">▶</span><span class="wave" id="w1"></span><span class="dur">0:14</span></div>
+          </div>
+          <div class="bub me">Good morning. I dey listen, you get correct accent. That your third prompt made me laugh, the one about jollof.</div>
+          <div class="bub them">Ha! Okay so you're not a bot. What part of Lekki are you in?</div>
+          <div class="safety"><b>Date check-in is on</b>Share your live location with one trusted contact when you meet. Free, one tap, always.</div>
+        </div>
+        <div style="padding:2px 16px 9px;font-size:9.5px;color:#5A5344;letter-spacing:.02em">Social handles unlock after a verified voice or video call</div>
+        <div class="composer">
+          <div class="input">Message…</div>
+          <div class="mic">🎙</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 5 pass -->
+    <div class="col">
+      <div class="num">05</div>
+      <h3>Market Pass</h3>
+      <div class="note">Priced like a market board. Naira, transfer and airtime, no silent card re-auths.</div>
+      <div class="phone"><div class="screen">
+        <div class="pass">
+          <div class="passhead">
+            <div class="eyebrow">Market Pass</div>
+            <div class="h1">More of the market.</div>
+            <p>Unlimited likes, see who liked you, rewind, 5 Super Likes a week, Passport to any city.</p>
+          </div>
+          <div class="board">
+            <div class="row"><div class="l"><b>One month</b><span>cancel anytime</span></div><div class="r">₦2,500</div></div>
+            <div class="row pick"><div class="l"><b>Three months <span class="save">SAVE 13%</span></b><span>most chosen</span></div><div class="r">₦6,500</div></div>
+            <div class="row"><div class="l"><b>One year <span class="save">SAVE 37%</span></b><span>founding member price</span></div><div class="r">₦19,000</div></div>
+            <div class="free"><b>Always free, for everyone</b>Verification · report &amp; block · date check-in · live location share. Safety is not a premium feature here.</div>
+            <div class="pay">Pay with any of these</div>
+            <div class="wallets"><span>Bank transfer</span><span>Card</span><span>USSD</span><span>Airtime</span><span>Market Cash</span></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div><b>Also drawn but not shown:</b> Àṣà ticketed singles mixers (Lagos → Abuja → PH), and the Owambe marketplace that routes long-term matches to vetted wedding vendors at 10 to 15%. That last line is where a dating app becomes a big business in Nigeria.</div>
+    <div class="legend">
+      <span><b>Plan:</b> .hermes/plans/2026-11-03_101009-love-market.md</span>
+      <span><b>Stack:</b> Expo RN · Node · Postgres/PostGIS · Paystack · Fingerprint</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+const people = [
+  {n:"Adaeze",a:26,d:"12 mins away",ar:"Lekki Phase 1",t:"Serious",
+   q:"A Sunday I won't forget",p:"There was no generator noise the whole afternoon. I still talk about it.",
+   g:"linear-gradient(150deg,#7A4A2E,#C8862B 45%,#3E2A1D)"},
+  {n:"Tunde",a:29,d:"8 mins away",ar:"Yaba",t:"Serious",
+   q:"The way to my heart",p:"Find me the best suya in Lagos and I'm yours. I have a spreadsheet. I'm serious.",
+   g:"linear-gradient(150deg,#1E5442,#133A2E 50%,#0C241C)"},
+  {n:"Zainab",a:27,d:"21 mins away",ar:"Gwarinpa, Abuja",t:"Still figuring it out",
+   q:"Together we could",p:"Argue about which jollof is correct. I've already won, but come and try.",
+   g:"linear-gradient(150deg,#A8452A,#C8862B 55%,#5C2A1C)"},
+  {n:"Chidi",a:31,d:"15 mins away",ar:"Surulere",t:"Serious",
+   q:"My most useless skill",p:"I can tell you the year any Naija song came out. It has never once been useful.",
+   g:"linear-gradient(150deg,#3E4A6B,#1B2438 55%,#0F1626)"},
+  {n:"Ifeoma",a:24,d:"6 mins away",ar:"Ikoyi",t:"Friendship",
+   q:"Weekends are for",p:"Beach at Tarkwa Bay, then finding the one place in Lagos with proper small chops.",
+   g:"linear-gradient(150deg,#C8862B,#E3A93F 45%,#7A4A2E)"}
+];
+let i = 0;
+const c1 = document.getElementById('c1'), c2 = document.getElementById('c2');
+
+function cardHTML(p){
+  return `<div class="photo" style="background-image:${p.g}"></div>
+    <div class="info">
+      <div class="vbadge">✓ Verified</div>
+      <div class="nm">${p.n}, ${p.a}</div>
+      <div class="meta"><span>${p.d}</span><span class="pill">${p.ar}</span><span class="pill">${p.t}</span></div>
+      <div class="prompt"><b>${p.q}</b>${p.p}</div>
+    </div>`;
+}
+function render(){
+  c1.innerHTML = cardHTML(people[i % people.length]);
+  c2.innerHTML = cardHTML(people[(i+1) % people.length]);
+  c1.style.transform = 'none'; c1.style.opacity = '1';
+}
+function swipe(kind){
+  const x = kind === 'like' ? 420 : kind === 'nope' ? -420 : 0;
+  const y = kind === 'star' ? -560 : 0;
+  c1.style.transform = `translate(${x}px,${y}px) rotate(${x/28}deg)`;
+  c1.style.opacity = '0';
+  setTimeout(()=>{ i++; render(); }, 380);
+}
+document.getElementById('w1').innerHTML =
+  Array.from({length:22},()=>`<i style="height:${5+Math.random()*14}px"></i>`).join('');
+render();
+</script>
+</body>
+</html>
